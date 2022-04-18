@@ -16,7 +16,7 @@ namespace _2SideCard
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new AnswersForm());
+            Application.Run(new SettingForm());
         }
     }
 }
