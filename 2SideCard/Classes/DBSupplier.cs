@@ -19,7 +19,21 @@ namespace _2SideCard
         private const string READ_EXPRESSION = "SELECT * FROM Cards";
 
 
+        public static void DeleteAllDB()
+        {
+            using (var connection = new SqliteConnection(CONNECTION_FOR_ADD))
+            {
+                connection.Open();
 
+                using (SqliteCommand command = new SqliteCommand())
+                {
+                    command.Connection = connection;
+                    command.CommandText = "DELETE FROM Cards";
+                    command.ExecuteNonQuery();
+
+                }
+            }
+        }
         public static void AddToDB(string question, string answer)
         {
             using (var connection = new SqliteConnection(CONNECTION_FOR_ADD))
@@ -37,7 +51,6 @@ namespace _2SideCard
                     command.Parameters.Add(questionParam);
                     command.Parameters.Add(answerParam);
                     command.ExecuteNonQuery();
-
                 }
             }
 

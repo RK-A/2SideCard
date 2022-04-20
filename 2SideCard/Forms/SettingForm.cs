@@ -12,25 +12,28 @@ namespace _2SideCard
 {
     public partial class SettingForm : Form
     {
-        
+        private bool flagOverturn;
+        private int trueAnswers, countAnswers;
+
         public SettingForm()
         {
+            flagOverturn = false;
             InitializeComponent();
         }
 
-        private void bMenu_Click(object sender, EventArgs e)
+        private void bSave_Click(object sender, EventArgs e)
         {
-            DBSupplier.AddToDB("Ты черт", "нет");
-            string[] answers = richTextBoxAnswers.Text.Split('\n');
-            string[] quetions = richTextBoxQuestions.Text.Split('\n');
+            string[] answers = richTextBoxAnswers.Text.Trim().Split('\n');
+            string[] quetions = richTextBoxQuestions.Text.Trim().Split('\n');
             if (answers.Length!=quetions.Length)
             {
                 MessageBox.Show("Need the same numbers of questions and answers");
                 return;
             }
+            DBSupplier.DeleteAllDB();
             for (int i = 0; i < quetions.Length; i++)
             {
-                DBSupplier.AddToDB(quetions[i], answers[i]);
+                DBSupplier.AddToDB(quetions[i].Trim(), answers[i].Trim());
             }
         }
 
@@ -41,20 +44,44 @@ namespace _2SideCard
             DBSupplier.ReadDB(out questions, out answers);
             string[] q = questions.Trim().Split('\n');
             string[] a = answers.Trim().Split('\n');
+            bool[] truth = new bool[q.Length];
             List<string> userAnswer = new List<string>();
             Hide();
-            foreach (var i in RandomIndexes(q.Length))
+            var indexes = RandomIndexes(q.Length);
+            foreach (var i in indexes)
             {
-                using (var qForm = new QuestionForm(q[i]))
+
+                if (q[i].Trim().Equals(string.Empty) || a[i].Trim().Equals(string.Empty))
+                {
+                    userAnswer.Add("---------");
+                    continue;
+                }
+                using (var qForm = new QuestionForm(flagOverturn ? a[i]: q[i]))
                 {
                     if (qForm.ShowDialog().Equals(DialogResult.OK))
                     {
                         userAnswer.Add(qForm.Answer);
+                        if (qForm.Answer.Trim().ToLower().Equals(flagOverturn ? q[i] : a[i]))
+                        {
+                            trueAnswers++;
+                            truth[i] = true;
+                        }
+                        countAnswers++;
+                    }
+                    else
+                    {
+                        Show();
+                        return;
                     }
                     
                 }
             }
-            ResultForm resultForm = new ResultForm(q, a, userAnswer.ToArray());
+            ResultForm resultForm = new ResultForm(indexes.Select(x => flagOverturn ? a[x]: q[x]).ToArray(),
+                                                   indexes.Select(x => flagOverturn ? q[x] : a[x]).ToArray(),
+                                                   userAnswer.ToArray(),
+                                                   truth,
+                                                   trueAnswers,
+                                                   countAnswers);
             resultForm.Show();
             Show();
         }
@@ -80,6 +107,16 @@ namespace _2SideCard
             DBSupplier.ReadDB(out questions, out answers);
             richTextBoxQuestions.Text = questions.Trim();
             richTextBoxAnswers.Text = answers.Trim();
+        }
+
+        private void checkBoxOverturn_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBoxOverturn.Checked)
+            {
+                flagOverturn = true;
+                return;
+            }
+            flagOverturn = false;
         }
     }
 }

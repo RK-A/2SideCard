@@ -34,6 +34,7 @@ namespace _2SideCard
             this.ColumnQuest = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnAns = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnUser = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnTruth = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
             this.SuspendLayout();
             // 
@@ -54,10 +55,12 @@ namespace _2SideCard
             this.dataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ColumnQuest,
             this.ColumnAns,
-            this.ColumnUser});
+            this.ColumnUser,
+            this.ColumnTruth});
             this.dataGridView.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.dataGridView.Location = new System.Drawing.Point(0, 43);
             this.dataGridView.Name = "dataGridView";
+            this.dataGridView.ReadOnly = true;
             this.dataGridView.Size = new System.Drawing.Size(800, 407);
             this.dataGridView.TabIndex = 1;
             // 
@@ -75,6 +78,11 @@ namespace _2SideCard
             // 
             this.ColumnUser.HeaderText = "Your answer";
             this.ColumnUser.Name = "ColumnUser";
+            // 
+            // ColumnTruth
+            // 
+            this.ColumnTruth.HeaderText = "Truth";
+            this.ColumnTruth.Name = "ColumnTruth";
             // 
             // ResultForm
             // 
@@ -100,5 +108,6 @@ namespace _2SideCard
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnQuest;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnAns;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnUser;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnTruth;
     }
 }

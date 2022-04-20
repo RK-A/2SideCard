@@ -30,5 +30,14 @@ namespace _2SideCard
             DialogResult = DialogResult.OK;
             Answer = tbAns.Text;
         }
+
+
+        private void tbAns_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                bNext.PerformClick();
+            }
+        }
     }
 }

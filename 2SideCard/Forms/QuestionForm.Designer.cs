@@ -51,6 +51,7 @@ namespace _2SideCard
             this.tbAns.Name = "tbAns";
             this.tbAns.Size = new System.Drawing.Size(350, 35);
             this.tbAns.TabIndex = 1;
+            this.tbAns.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbAns_KeyDown);
             // 
             // bNext
             // 
