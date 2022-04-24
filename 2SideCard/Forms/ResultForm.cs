@@ -18,15 +18,13 @@ namespace _2SideCard
         private readonly string[] questions;
         private readonly string[] answers;
         private readonly string[] userAns;
-        private readonly bool[] truths;
 
-        public ResultForm(string[] questions, string[] answers, string[] userAns, bool[] truths, int truth, int count)
+        public ResultForm(string[] questions, string[] answers, string[] userAns, int truth, int count)
         {
             InitializeComponent();
             this.questions = questions;
             this.answers = answers;
             this.userAns = userAns;
-            this.truths = truths;
             labelTotal.Text = $"Total: {truth}\\{count}";
         }
 
@@ -44,12 +42,14 @@ namespace _2SideCard
                     continue;
                 }
                 
-                dataGridView.Rows.Add(new object[] { questions[i], answers[i], userAns[i], truths[i] ? "True" : "False" } );
+                dataGridView.Rows.Add(new object[] { questions[i], answers[i], userAns[i] });
                 
             }
             for (int i = 0; i < dataGridView.Rows.Count-1; i++)
             {
-                if (dataGridView.Rows[i].Cells[3].Value.Equals("True"))
+                string corrAns = dataGridView.Rows[i].Cells[2].Value.ToString().Trim().ToLower();
+                string yourAns = dataGridView.Rows[i].Cells[1].Value.ToString().Trim().ToLower();
+                if (corrAns.Equals(yourAns))
                 {
                     dataGridView.Rows[i].DefaultCellStyle.BackColor = Color.Green;
                 }

@@ -40,11 +40,12 @@ namespace _2SideCard
 
         private void bStart_Click(object sender, EventArgs e)
         {
+            trueAnswers = 0;
+            countAnswers = 0;
             string questions, answers;
             DBSupplier.ReadDB(out questions, out answers);
             string[] q = questions.Trim().Split('\n');
             string[] a = answers.Trim().Split('\n');
-            bool[] truth = new bool[q.Length];
             List<string> userAnswer = new List<string>();
             Hide();
             var indexes = RandomIndexes(q.Length);
@@ -61,10 +62,9 @@ namespace _2SideCard
                     if (qForm.ShowDialog().Equals(DialogResult.OK))
                     {
                         userAnswer.Add(qForm.Answer);
-                        if (qForm.Answer.Trim().ToLower().Equals(flagOverturn ? q[i] : a[i]))
+                        if (qForm.Answer.Trim().ToLower().Equals(flagOverturn ? q[i].Trim().ToLower() : a[i].Trim().ToLower()))
                         {
                             trueAnswers++;
-                            truth[i] = true;
                         }
                         countAnswers++;
                     }
@@ -79,7 +79,6 @@ namespace _2SideCard
             ResultForm resultForm = new ResultForm(indexes.Select(x => flagOverturn ? a[x]: q[x]).ToArray(),
                                                    indexes.Select(x => flagOverturn ? q[x] : a[x]).ToArray(),
                                                    userAnswer.ToArray(),
-                                                   truth,
                                                    trueAnswers,
                                                    countAnswers);
             resultForm.Show();
